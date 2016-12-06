@@ -92,11 +92,6 @@ namespace PetriNetCsharp
 
             //generowanie macierzy incydencji ==> D = Din - Dout
             D = MakeIncidenceMatrix();
-            D = MakeIncidenceMatrix();
-            D = MakeIncidenceMatrix();
-            D = MakeIncidenceMatrix();
-
-
 
 
             //generowanie macierzy Tcond - warunkow odpalenia tranzycji
