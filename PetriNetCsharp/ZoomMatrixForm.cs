@@ -40,6 +40,10 @@ namespace PetriNetCsharp
                 }
             }
             UpdateDataGrid(dataGridViewDxxx);
+            if (sourceDgv.ReadOnly)
+            {
+                btnFillWithZeros.Visible = false;
+            }
         }
 
 
