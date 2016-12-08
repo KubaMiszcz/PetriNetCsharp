@@ -26,27 +26,54 @@ namespace PetriNetCsharp
         public MainForm()
         {
             InitializeComponent();
-        //List<int> Mcurrent = new List<int>(new int[] { 1, 0, 0, 0 });
+            //List<int> Mcurrent = new List<int>(new int[] { 1, 0, 0, 0 });
             _numberOfPlacesDgvCols = int.Parse(textBoxNumPlaces.Text);
             _numberOfTransitionsDgvRows = int.Parse(textBoxNumTransitions.Text);
-            UpdateDataGrid(dataGridViewDin);
-            UpdateDataGrid(dataGridViewDout);
-            UpdateDataGrid(dataGridViewMcurrent,1);
+            UpdateDataGrid(dgvDin);
+            UpdateDataGrid(dgvDout);
+            UpdateDataGrid(dgvMbegin, 1);
+            UpdateDataGrid(dgvIncidenceMatrix);
+            UpdateDataGrid(dgvMcurrent, 1);
+
+
+            //UpdateDataGrid(dgvIncidenceMatrix);
+            //ImportMatrix2DToDataGridView(_petriNet.Dmatrix,dgvIncidenceMatrix);
+
+            //DRUGI TAB
+            UpdateDataGrid(dataGridViewTcond);
+            UpdateDataGrid(dgvTready, 2);
+
+            //#################################################testowa siec
+            List<List<int>> dinn = new List<List<int>>();
+            dinn.Add(new List<int>(new int[] { 0, 1, 1, 0 }));
+            dinn.Add(new List<int>(new int[] { 0, 0, 0, 1 }));
+            dinn.Add(new List<int>(new int[] { 1, 0, 0, 0 }));
+            ImportMatrix2DToDataGridView(dinn, dgvDin);
+
+            List<List<int>> doutt = new List<List<int>>();
+            doutt.Add(new List<int>(new int[] { 1, 0, 0, 0 }));
+            doutt.Add(new List<int>(new int[] { 0, 1, 1, 0 }));
+            doutt.Add(new List<int>(new int[] { 0, 0, 0, 1 }));
+            ImportMatrix2DToDataGridView(doutt, dgvDout);
+
+            List<int> mo = new List<int>(new int[] { 1, 0, 0, 0 });
+            ImportVectorToDataGridView(mo, dgvMbegin);
+            //#################################################koneic testowej sieci
+
             UpdatePetriNet();
-            UpdateDataGrid(dataGridViewIncidenceMatrix);
-            ImportMatrix2DToDataGridView(_petriNet.D,dataGridViewIncidenceMatrix);
+
         }
 
-        public void UpdateDataGrid(DataGridView target,int rows=0)
+        public void UpdateDataGrid(DataGridView target, int param = 0)
         {
-            if (rows==0)
+
+            target.RowCount = _numberOfTransitionsDgvRows;
+            target.ColumnCount = _numberOfPlacesDgvCols;
+
+            if (param == 1)
             {
-                target.RowCount = _numberOfTransitionsDgvRows;
-            }
-            else
-            {
-                target.RowCount = rows; //czyli zmieniam mcurrent - tylko jeden wiersz
-                if (_numberOfPlacesDgvCols>13)  //szer dgv/szer col== 325/25=13
+                target.RowCount = 1; //czyli zmieniam mcurrent - tylko jeden wiersz
+                if (_numberOfPlacesDgvCols > (int)target.Width / 25)  //szer dgv/szer col== 325/25=13
                 {
                     target.Height = 46 + SystemInformation.HorizontalScrollBarHeight;
                 }
@@ -54,14 +81,26 @@ namespace PetriNetCsharp
                 {
                     target.Height = 46;
                 }
-                
             }
-            
-            target.ColumnCount = _numberOfPlacesDgvCols;
+            if (param == 2)//ten dgv kolumnowy bool z tready
+            {
+                target.ColumnCount = 1;
+                target.Columns[0].Width = 35;
+                target.Columns[0].HeaderText = "OK?";
+                target.RowHeadersWidth = 48;
+                for (int i = 0; i < target.RowCount; i++)
+                {
+                    //target.Rows[i].Cells[0].Value = false;
+                    target.Rows[i].HeaderCell.Value = (i + 1).ToString();
+                    target.RowHeadersWidth = 48;
+                }
+                return;
+            }
+
             FillNullsInDgvWithZeros(target);
             for (int i = 0; i < target.ColumnCount; i++)
             {
-                target.Columns[i].HeaderText = (i+1).ToString();
+                target.Columns[i].HeaderText = (i + 1).ToString();
                 target.Columns[i].Width = 25;
 
             }
@@ -70,28 +109,32 @@ namespace PetriNetCsharp
                 target.Rows[i].HeaderCell.Value = (i + 1).ToString();
                 target.RowHeadersWidth = 48;
             }
+
         }
 
-        private void UpdateAllDataGrids()
+        private void UpdateAllDataGridViews()
         {
-            UpdateDataGrid(dataGridViewDin);
-            UpdateDataGrid(dataGridViewDout);
-            UpdateDataGrid(dataGridViewMcurrent, 1);
-            UpdateDataGrid(dataGridViewIncidenceMatrix);
-        }
+            UpdateDataGrid(dgvDin);
+            UpdateDataGrid(dgvDout);
+            UpdateDataGrid(dgvMbegin, 1);
+            UpdateDataGrid(dgvIncidenceMatrix);
+            UpdateDataGrid(dgvMcurrent, 1);
+            UpdateDataGrid(dataGridViewTcond);
+            UpdateDataGrid(dgvTready, 2);
 
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             _titleBar = this.Text;
         }
-        
+
         private void textBoxNumPlaces_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 _numberOfPlacesDgvCols = int.Parse(textBoxNumPlaces.Text);
-UpdateAllDataGrids();
+                UpdateAllDataGridViews();
             }
             catch (FormatException ex)
             {
@@ -108,8 +151,8 @@ UpdateAllDataGrids();
         {
             try
             {
-                _numberOfPlacesDgvCols = int.Parse(textBoxNumTransitions.Text);
-                UpdateAllDataGrids();
+                _numberOfTransitionsDgvRows = int.Parse(textBoxNumTransitions.Text);
+                UpdateAllDataGridViews();
             }
             catch (FormatException ex)
             {
@@ -121,7 +164,7 @@ UpdateAllDataGrids();
             }
         }
 
- private void dataGridViewDinDout_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void dataGridViewDinDout_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             UpdatePetriNet();
         }
@@ -131,12 +174,14 @@ UpdateAllDataGrids();
 
             try
             {
-                _petriNet = new PetriNet(dataGridViewDin, dataGridViewDout, dataGridViewMcurrent);
-                ImportMatrix2DToDataGridView(_petriNet.D, dataGridViewIncidenceMatrix);
+                _petriNet = new PetriNet(dgvDin, dgvDout, dgvMbegin);
+                ImportMatrix2DToDataGridView(_petriNet.Dmatrix, dgvIncidenceMatrix);
+                ImportMatrix2DToDataGridView(_petriNet.Tcond, dataGridViewTcond);
+                ImportVectorToDataGridView(_petriNet.TReady, dgvTready);
             }
             catch (Exception ex)
             {
-                Raport(ex);
+                Report(ex);
             }
         }
 
@@ -174,24 +219,19 @@ UpdateAllDataGrids();
 
         private void button5_Click(object sender, EventArgs e)
         {
-            FillWholeDgvWithZeros(dataGridViewDout);
+            FillWholeDgvWithZeros(dgvDout);
             UpdatePetriNet();
         }
 
         private void oProgramieToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutBox1 about = new AboutBox1();
-            about.Show();
+            //AboutBox1 about = new AboutBox1();
+            //about.Show();
         }
 
         private void wyjscieToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-        
-        private void btnUpdateNetProp_Click(object sender, EventArgs e)
-        {
-            UpdatePetriNet();
         }
 
         private void zapiszJakoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -208,14 +248,15 @@ UpdateAllDataGrids();
                 {
                     if ((myStream = saveFileDialog1.OpenFile()) != null)
                     {
-                        using (StreamWriter writer = new StreamWriter(myStream))
+                        using (StreamWriter writer = new StreamWriter(myStream, System.Text.Encoding.UTF8))
                         {
                             // Add some text to the file.
                             //writer.Write("This is the ");
                             //writer.WriteLine("header for the file.");
                             //writer.WriteLine("-------------------");
                             // Arbitrary objects can also be written to the file.
-                            var json = new JavaScriptSerializer().Serialize(_petriNet);
+                            //var json = new JavaScriptSerializer().Serialize(_petriNet);
+                            string json = JsonConvert.SerializeObject(_petriNet, Formatting.Indented);
                             writer.WriteLine(json);
                         }
                         myStream.Close();
@@ -234,19 +275,19 @@ UpdateAllDataGrids();
             {
                 if (_currentSavedFileName == null)
                 {
-                    MessageBox.Show("Nic jeszcze nie zapisywałeś!",
-                        "Błąd!!!",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning,
-                        MessageBoxDefaultButton.Button1
-                        //MessageBoxOptions.,
-                        );
+                    zapiszJakoToolStripMenuItem_Click(sender, e);
 
-                    return;
+                    //MessageBox.Show("Nic jeszcze nie zapisywałeś!",
+                    //    "Błąd!!!",
+                    //    MessageBoxButtons.OK,
+                    //    MessageBoxIcon.Warning,
+                    //    MessageBoxDefaultButton.Button1
+                    //    //MessageBoxOptions.,
+                    //    );
                 }
                 ;
                 FileStream file = new FileStream(_currentSavedFileName, FileMode.Create);
-                using (StreamWriter writer = new StreamWriter(file))
+                using (StreamWriter writer = new StreamWriter(file, System.Text.Encoding.UTF8))
                 {
                     // Add some text to the file.
                     //writer.Write("This is the ");
@@ -255,7 +296,7 @@ UpdateAllDataGrids();
                     // Arbitrary objects can also be written to the file.
 
                     //                    var json = new JavaScriptSerializer().Serialize(_petriNet);
-                    string json = JsonConvert.SerializeObject(_petriNet);//, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(_petriNet, Formatting.Indented);
                     writer.Write(json);
                 }
                 file.Close();
@@ -279,21 +320,24 @@ UpdateAllDataGrids();
                     {
                         if ((myStream = openFileDialog1.OpenFile()) != null)
                         {
-                            using (StreamReader reader = new StreamReader(myStream))
+                            using (StreamReader reader = new StreamReader(myStream, System.Text.Encoding.UTF8))
                             {
                                 // Insert code to read the stream here.
                                 while (!reader.EndOfStream)
                                 {
-                                    string json =reader.ReadToEnd();
-                                    //PetriNet newnet= JsonConvert.DeserializeObject<PetriNet>(json);
+                                    string json = reader.ReadToEnd();
+                                    _petriNet = JsonConvert.DeserializeObject<PetriNet>(json);
+                                    ImportMatrix2DToDataGridView(_petriNet.DinMatrix, dgvDin);
+                                    ImportMatrix2DToDataGridView(_petriNet.DoutMatrix, dgvDout);
+                                    ImportVectorToDataGridView(_petriNet.Mbegin, dgvMbegin);
+                                    UpdatePetriNet();
 
-
-                                   // _petriNet = new JavaScriptSerializer().Deserialize<PetriNet>(json);
+                                    // _petriNet = new JavaScriptSerializer().Deserialize<PetriNet>(json);
                                 }
 
                                 myStream.Close();
-                                //_petriNet.Matrix2DToDataGridView(_petriNet.Din,dataGridViewDin);
-                                //_petriNet.Matrix2DToDataGridView(_petriNet.Dout, dataGridViewDout);
+                                //_petriNet.Matrix2DToDataGridView(_petriNet.DinMatrix,dgvDin);
+                                //_petriNet.Matrix2DToDataGridView(_petriNet.DoutMatrix, dgvDout);
                                 //List<List<int>> tmpList =new List<List<int>>();
                                 //tmpList.Add(_petriNet.Mcurrent);
                                 //_petriNet.Matrix2DToDataGridView(tmpList, dataGridViewMcurrent);
@@ -310,7 +354,7 @@ UpdateAllDataGrids();
                 _currentSavedFileName = openFileDialog1.FileName;
                 if (_currentSavedFileName != "")
                 {
-                    this.Text = _currentSavedFileName + " - "+_titleBar;
+                    this.Text = _currentSavedFileName + " - " + _titleBar;
                 }
             }
 
@@ -324,25 +368,48 @@ UpdateAllDataGrids();
 
         private void btnZerujDin_Click(object sender, EventArgs e)
         {
-            FillWholeDgvWithZeros(dataGridViewDin);
-    }
+            FillWholeDgvWithZeros(dgvDin);
+        }
 
         private void btnZoomDin_Click(object sender, EventArgs e)
         {
-            ZoomMatrixForm form = new ZoomMatrixForm(dataGridViewDin, "Macierz D+ (Din)");
+            ZoomMatrixForm form = new ZoomMatrixForm(dgvDin, "Macierz Dmatrix+ (DinMatrix)");
             form.Show();
         }
         private void btnZoomDout_Click(object sender, EventArgs e)
         {
-            ZoomMatrixForm form = new ZoomMatrixForm(dataGridViewDout, "Macierz D-- (Dout)");
+            ZoomMatrixForm form = new ZoomMatrixForm(dgvDout, "Macierz Dmatrix-- (DoutMatrix)");
             form.Show();
         }
         private void btnZoomIncidenceMatrix_Click(object sender, EventArgs e)
         {
-            ZoomMatrixForm form = new ZoomMatrixForm(dataGridViewIncidenceMatrix, "Transponowana macierz incydencji (D')");
+            ZoomMatrixForm form = new ZoomMatrixForm(dgvIncidenceMatrix, "Transponowana macierz incydencji (Dmatrix')");
             form.Show();
         }
 
-        
+
+        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridViewTcond_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnNextStep_Click(object sender, EventArgs e)
+        {
+            _petriNet.NextStep();
+            ImportVectorToDataGridView(_petriNet.Mcurrent, dgvMcurrent);
+            tbCurrentStep.Text = _petriNet.CurrentStep.ToString();
+            //dorob update treadt dgv
+        }
+
+        private void atest(object sender, EventArgs e)
+        {
+            MessageBox.Show("atest");
+        }
+
     }
 }

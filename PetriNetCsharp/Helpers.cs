@@ -26,7 +26,7 @@ namespace PetriNetCsharp
             }
             catch (Exception ex)
             {
-                Raport(ex);
+                Report(ex);
             }
 
         }
@@ -80,7 +80,54 @@ namespace PetriNetCsharp
             catch (Exception ex)
             {
 
-                Raport(ex);
+                Report(ex);
+            }
+        }
+
+        public static void ImportVectorToDataGridView(List<int> source, DataGridView target)
+        {
+            try
+            {
+                for (int i = 0; i < source.Count; i++)
+                {
+                    if (target.RowCount == 1) //dgv jeden wiersz
+                    {
+                        target.Rows[0].Cells[i].Value = source[i].ToString();
+                    }
+                    if (target.ColumnCount == 1) //dgv jedna kolumna
+                    {
+                        target.Rows[i].Cells[0].Value = source[i].ToString();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Report(ex);
+            }
+        }
+        public static void ImportVectorToDataGridView(List<bool> source, DataGridView target)
+        {
+            try
+            {
+                for (int i = 0; i < source.Count; i++)
+                {
+                    if (target.RowCount == 1) //dgv jeden wiersz
+                    {
+                        target.Rows[0].Cells[i].Value = source[i].ToString();
+                    }
+                    if (target.ColumnCount == 1) //dgv jeden wiersz
+                    {
+                        target.Rows[i].Cells[0].Value = source[i].ToString();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Report(ex);
             }
         }
 
@@ -110,10 +157,20 @@ namespace PetriNetCsharp
                 {
                     throw new System.InvalidOperationException("Liczba kolumna Macierzy A\n rozna od liczby wierszy macierzy B");
                 }
-                List<int> tmp1D = new List<int>(colsB);
-                FillListWithValue(tmp1D, 0);
+                //List<int> tmp1D = new List<int>(colsB);
+                //FillListWithValue(tmp1D, 0);
+                //List<List<int>> result = new List<List<int>>(rowsA);
+                //FillListWithValue(result, tmp1D);
+
                 List<List<int>> result = new List<List<int>>(rowsA);
-                FillListWithValue(result, tmp1D);
+                for (int i = 0; i < rowsA; i++)
+                {
+                    result.Add(new List<int>(colsB));
+                    for (int j = 0; j < colsB; j++)
+                    {
+                        result[i].Add(0);
+                    }
+                }
 
                 for (int row = 0; row < rowsA; row++)
                 {
@@ -130,12 +187,12 @@ namespace PetriNetCsharp
             }
             catch (InvalidOperationException ex)
             {
-                Raport(ex);
+                Report(ex);
                 return null;
             }
             catch (Exception ex)
             {
-                Raport(ex);
+                Report(ex);
                 throw;
             }
 
@@ -154,7 +211,7 @@ namespace PetriNetCsharp
             }
             catch (Exception ex)
             {
-                Raport(ex); return null;
+                Report(ex); return null;
             }
 
         }
@@ -181,7 +238,7 @@ namespace PetriNetCsharp
             }
             catch (Exception ex)
             {
-                Raport(ex); return null;
+                Report(ex); return null;
             }
 
         }
@@ -199,7 +256,7 @@ namespace PetriNetCsharp
             }
             catch (Exception ex)
             {
-                Raport(ex); return null;
+                Report(ex); return null;
             }
 
         }
@@ -226,15 +283,22 @@ namespace PetriNetCsharp
             }
             catch (Exception ex)
             {
-                Raport(ex); return null;
+                Report(ex); return null;
             }
 
         }
 
 
-        public static void Raport(Exception ex)
+        public static void Report(Exception ex)
         {
             MessageBox.Show(ex.Message + "\n\n" + ex.StackTrace);
+        }
+
+
+        public static bool IntToBool(int a)
+        {
+            //return (a == 0) ? false : true;
+            return a != 0;  //aaale koooosmos   
         }
     }
 }

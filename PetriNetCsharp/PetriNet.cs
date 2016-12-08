@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using static PetriNetCsharp.Helpers;
 
 namespace PetriNetCsharp
@@ -15,54 +16,108 @@ namespace PetriNetCsharp
         /// </summary>
 
         //private //members
-        private List<List<int>> _Tcond; //macierz warunki konieczne odpalenia dla kazdej tranzycji [TxP]????
+        private List<List<int>> _Tcond; //macierz warunki konieczne odpalenia dla kazdej tranzycji [TxP]
+        private List<bool> _TReady; //macierz tranzycji gotowych do odpalenia[Tx1]
         private List<List<int>> _Teye;    //macierz diagonalna wektorow jedynkowych do wyznaczenia warunkow odpalania tranzycji [TxT]
         //private List<List<int>> _D;     //macierz incydencji transponowana	[TxP]
         private int _currentlyCheckedTransition; //tranzycja aktualnie testowana
         //private List<List<int>> _tmp2D;
-        private List<int> _tmp1D;
-
+        
         //public members
-        public int NumberOfPlaces { get; }
-        public int NumberOfTransitions { get; }
-        public List<List<int>> D { get; }     //macierz incydencji transponowana	[TxP]
-        public List<List<int>> Din { get; }   //macierz wejsc - dodawania zetonow [TxP]
-        public List<List<int>> Dout { get; }  //macierz wyjsc - odejmowania zetonow [TxP]
-        public List<List<int>> Tcond { get; }   //macierz warunki konieczne odpalenia dla kazdej tranzycji [TxP]????
-        public List<int> TReady { get; }         //wektro tranzycji gotowych do odpalenia po sprawdzeniu warunkow [T]
-        public int CurrentlyCheckedTransition { get; } //tranzycja aktualnie testowana
-        public List<int> Mbegin { get; set; }        //wektro znakowania poczatkowego [P]
-        public List<int> Mcurrent { get; }        //wektro znakowania poczatkowego [P]
+        [JsonIgnore]
+        public int NumberOfPlaces { get;  set; }
+        [JsonIgnore]
+        public int NumberOfTransitions { get;  set; }
+        [JsonIgnore]
+        public List<List<int>> Dmatrix { get; set; }     //macierz incydencji transponowana	[TxP]
+        [JsonProperty]
+        public List<List<int>> DinMatrix { get;  set; }   //macierz wejsc - dodawania zetonow [TxP]
+        [JsonProperty]
+        public List<List<int>> DoutMatrix { get;   set; }  //macierz wyjsc - odejmowania zetonow [TxP]
+        [JsonIgnore]
+        public List<List<int>> Tcond { get;  set; }   //macierz warunki konieczne odpalenia dla kazdej tranzycji [TxP]????
+        [JsonIgnore]
+        public List<bool> TReady { get;  set; }         //wektro tranzycji gotowych do odpalenia po sprawdzeniu warunkow [T]
+        [JsonIgnore]
+        public int CurrentlyCheckedTransition { get;  set; } //tranzycja aktualnie testowana
+        [JsonProperty]
+        public List<int> Mbegin { get;  set; }        //wektro znakowania poczatkowego [P]
+        [JsonIgnore]
+        public List<int> Mcurrent { get;  set; }        //wektro znakowania poczatkowego [P]
+        [JsonIgnore]
+        public int CurrentStep { get;  set; }
+
+        //konstruktory
+        public PetriNet() { }
+        public PetriNet(DataGridView dgvDin, DataGridView dgvDout, DataGridView dgvMo)   //konstruktor
+        {
+            CurrentStep = 1;
+            _currentlyCheckedTransition = 0;
+            DinMatrix = ImportDataGridToMatrix2D(dgvDin);
+            DoutMatrix = ImportDataGridToMatrix2D(dgvDout);
+            Mbegin = ImportDataGridToMatrix2D(dgvMo)[0];
+            Mcurrent = Mbegin;
+
+            NumberOfTransitions = DinMatrix.Count;
+            NumberOfPlaces = DinMatrix[0].Count;
+
+            //generowanie macierzy incydencji ==> Dmatrix = DinMatrix - DoutMatrix
+            Dmatrix = MakeIncidenceMatrix();
+
+            //generowanie macierzy Tcond - warunkow odpalenia tranzycji
+            //warunki odpalenia dla kazdej trnazycji
+            //		Tcond = Teye * DoutMatrix;
+            Tcond = MakeTransitionConditions();
+
+            TReady = MakeTreadyVector();//to jest tylko do pokazania w dgv bo i tak trza to sprawdzac po kolei pojedynczo
+
+        }
+
 
         //private //methods
-        private List<List<int>> MakeIncidenceMatrix()    //generowanie macierzy incydencji ==> D=Din-Dout
+        private List<bool> MakeTreadyVector()
         {
-            return SubtractElementWise(Din, Dout);
+            try
+            {
+                _TReady = new List<bool>(NumberOfTransitions);
+                
+                for (int i = 0; i < _TReady.Capacity; i++)
+                {
+                    _TReady.Add(IntToBool(IsTransitionReadyToFire(_Tcond[i])));
+                }
+               return _TReady;
+                }
+            catch (Exception ex )
+            {
+                Report(ex);
+                return null;
+            }
         }
-        private void MakeTransitionConditions()
+
+        private List<List<int>> MakeIncidenceMatrix()    //generowanie macierzy incydencji ==> Dmatrix=DinMatrix-DoutMatrix
+        {
+            return SubtractElementWise(DinMatrix, DoutMatrix);
+        }
+        private List<List<int>> MakeTransitionConditions()
         {
             //		generowanie wektorow jednostkowych T[P]=eye dl akazdej tranzycji
-            _tmp1D = new List<int>(NumberOfTransitions);
-            FillListWithValue(_tmp1D, 0);
-
             _Teye = new List<List<int>>(NumberOfTransitions);
-            FillListWithValue(_Teye, _tmp1D);
-
-            //		generowanie macierzy Tcond - warunkow odpalenia tranzycji
-            //		warunki odpalenia dla kazdej trnazycji
-            //		Tcond = Teye * Dout;
-            _tmp1D = new List<int>(NumberOfPlaces);
-            FillListWithValue(_tmp1D, 0);
-            _Tcond = new List<List<int>>(NumberOfTransitions);
-            FillListWithValue(_Tcond, _tmp1D);
-
+            for (int i = 0; i < NumberOfTransitions; i++)
+            {
+                _Teye.Add(new List<int>());
+                for (int j = 0; j < NumberOfTransitions; j++)
+                {
+                    _Teye[i].Add(i == j ? 1 : 0);
+                }
+            }
 
             //		mnozenie macierzy
-            _Tcond = Matrix2DMultiply(_Teye, Dout);
-
+            _Tcond = Matrix2DMultiply(_Teye, DoutMatrix);
+            return _Tcond;
         }
         private int IsTransitionReadyToFire(List<int> condition)
         {
+            //tu jest int zamiast bool bo kopiowalem z Cpp ktore robilem na arduino
             int result = 1;
             int check = 1;
             for (int i = 0; i < NumberOfPlaces; i++)    //czy warunek spelniony dla wszystkich miejsc
@@ -74,31 +129,10 @@ namespace PetriNetCsharp
                     check = 0;
                 }
             }
-            return result * check;
+            return result*check;
         }
 
         //public //methods
-        public PetriNet() { }
-        public PetriNet(DataGridView dgvDin, DataGridView dgvDout, DataGridView dgvMo)   //konstruktor
-        {
-            _currentlyCheckedTransition = 0;
-            Din = ImportDataGridToMatrix2D(dgvDin);
-            Dout = ImportDataGridToMatrix2D(dgvDout);
-            Mbegin = ImportDataGridToMatrix2D(dgvMo)[0];
-            Mcurrent = Mbegin;
-
-            NumberOfTransitions = Din.Count;
-            NumberOfPlaces = Din[0].Count;
-
-            //generowanie macierzy incydencji ==> D = Din - Dout
-            D = MakeIncidenceMatrix();
-
-
-            //generowanie macierzy Tcond - warunkow odpalenia tranzycji
-            //warunki odpalenia dla kazdej trnazycji
-            //		Tcond = Teye * Dout;
-            MakeTransitionConditions();
-        }
         public void NextStep()
         {
             //to trzeba pojedynczko po kolei bo kazda tranzycja moze zmienc nam stan sieci
@@ -107,15 +141,17 @@ namespace PetriNetCsharp
             {
                 //teraz jesli warunek spelniony to uaktualniamy znakowanie, 
                 //kolejna tranzycja bedzie operowac na tym nowym znakowaniu
-                //newM=M+Teye[i]*D, czyli nei trzeba nawet mnozyc macierzy
+                //newM=M+Teye[i]*Dmatrix, czyli nei trzeba nawet mnozyc macierzy
 
-                AddElementWise(Mcurrent, _Tcond[_currentlyCheckedTransition]);
-                _currentlyCheckedTransition++;
+                Mcurrent= AddElementWise(Mcurrent, Dmatrix[_currentlyCheckedTransition]);
             }
-
+            _currentlyCheckedTransition++;
             if (_currentlyCheckedTransition >= NumberOfTransitions)
                 _currentlyCheckedTransition = 0;
+
+            CurrentStep++;
         }
+        
 
         //######HELPERS####
         List<List<int>> ImportDataGridToMatrix2D(DataGridView source)
@@ -138,7 +174,7 @@ namespace PetriNetCsharp
             catch (Exception ex)
             {
 
-                Raport(ex);
+                Report(ex);
             }
             return null;
         }
