@@ -187,7 +187,7 @@ D[4,2]=1</value>
   <data name="btnNumPlacesDown.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMwAAADNCAYAAAD0fp9XAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfgDAsAEDc6Hmx8
+        YQUAAAAJcEhZcwAACw0AAAsNAe0HwCwAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfgDAsAEDc6Hmx8
         AABg1ElEQVR4Xu29Z3QVR/b2+365X++Hd9217n3/NiAdSUcnKCdETiJncMA4YBywcc5p7BnHGTyecZhx
         9niccACTMyJHEUQGgRAoS0c6SVmABDz32dVq0RItIQkB9kz3Wo/qpE5V+1d77+rq1v+yFmu50Qvq/GlN
         L62lKwt8wVnwVsyBt3IOCsuAfA+Q16Tc4ks6XcTPRAVXqXxLXZLUnd4GbSi3sG3JNkrYjh7+zlOiqdwT
@@ -607,7 +607,7 @@ D[4,2]=1</value>
   <data name="btnNumTransitionsDown.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAMwAAADNCAYAAAD0fp9XAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfgDAsAEDc6Hmx8
+        YQUAAAAJcEhZcwAACw0AAAsNAe0HwCwAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfgDAsAEDc6Hmx8
         AABg1ElEQVR4Xu29Z3QVR/b2+365X++Hd9217n3/NiAdSUcnKCdETiJncMA4YBywcc5p7BnHGTyecZhx
         9niccACTMyJHEUQGgRAoS0c6SVmABDz32dVq0RItIQkB9kz3Wo/qpE5V+1d77+rq1v+yFmu50Qvq/GlN
         L62lKwt8wVnwVsyBt3IOCsuAfA+Q16Tc4ks6XcTPRAVXqXxLXZLUnd4GbSi3sG3JNkrYjh7+zlOiqdwT

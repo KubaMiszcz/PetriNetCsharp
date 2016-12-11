@@ -603,8 +603,7 @@
             this.dgvTcond.ShowEditingIcon = false;
             this.dgvTcond.Size = new System.Drawing.Size(343, 237);
             this.dgvTcond.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.dgvTcond, "macierz Dmatrix+    DinMatrix\r\nliczba strzalek wchodzacych do miejsca \r\nz poprzed" +
-        "zajacych tranzycji");
+            this.toolTip1.SetToolTip(this.dgvTcond, "warunki minimalne przy ktorych \r\ntranzycja jest gotowa do odpalenia");
             this.dgvTcond.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTcond_CellContentClick);
             // 
             // dataGridViewTextBoxColumn7
@@ -754,8 +753,7 @@
             this.dgvMhistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvMhistory.Size = new System.Drawing.Size(212, 184);
             this.dgvMhistory.TabIndex = 18;
-            this.toolTip1.SetToolTip(this.dgvMhistory, "macierz Dmatrix+    DinMatrix\r\nliczba strzalek wchodzacych do miejsca \r\nz poprzed" +
-        "zajacych tranzycji");
+            this.toolTip1.SetToolTip(this.dgvMhistory, "historia znakowan");
             // 
             // dataGridViewTextBoxColumn14
             // 
