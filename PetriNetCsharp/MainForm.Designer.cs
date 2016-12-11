@@ -33,6 +33,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -83,22 +84,26 @@
             this.dgvMbegin = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTcond = new System.Windows.Forms.DataGridView();
+            this.dgvTcond = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.dgvMcurrent = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.dgvMhistory = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.tbCurrentStep = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.dgvTready = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn13 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.btnNumPlacesDown = new System.Windows.Forms.Button();
-            this.btnNumPlacesUp = new System.Windows.Forms.Button();
-            this.btnNumTransitionsUp = new System.Windows.Forms.Button();
-            this.btnNumTransitionsDown = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.plikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nowyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -120,6 +125,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnNumPlacesDown = new System.Windows.Forms.Button();
+            this.btnNumTransitionsUp = new System.Windows.Forms.Button();
+            this.btnNumPlacesUp = new System.Windows.Forms.Button();
+            this.btnNumTransitionsDown = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btnNextStep = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -133,9 +142,9 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIncidenceMatrix)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMbegin)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTcond)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTcond)).BeginInit();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMcurrent)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMhistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTready)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -171,6 +180,7 @@
             this.textBoxNumPlaces.TabIndex = 3;
             this.textBoxNumPlaces.Text = "4";
             this.textBoxNumPlaces.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxNumPlaces.TextChanged += new System.EventHandler(this.textBoxNumPlaces_TextChanged);
             this.textBoxNumPlaces.Leave += new System.EventHandler(this.textBoxNumPlaces_TextChanged);
             // 
             // textBoxNumTransitions
@@ -182,6 +192,7 @@
             this.textBoxNumTransitions.Text = "3";
             this.textBoxNumTransitions.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBoxNumTransitions.TextChanged += new System.EventHandler(this.textBoxNumTransitions_TextChanged);
+            this.textBoxNumTransitions.Leave += new System.EventHandler(this.textBoxNumTransitions_TextChanged);
             // 
             // dgvDin
             // 
@@ -232,8 +243,8 @@
             this.dgvDin.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvDin.Size = new System.Drawing.Size(204, 200);
             this.dgvDin.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.dgvDin, "macierz Dmatrix+    DinMatrix\r\nliczba strzalek wchodzacych do miejsca \r\nz poprzedzajacych tra" +
-        "nzycji");
+            this.toolTip1.SetToolTip(this.dgvDin, "macierz Dmatrix+    DinMatrix\r\nliczba strzalek wchodzacych do miejsca \r\nz poprzed" +
+        "zajacych tranzycji");
             this.dgvDin.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDinDout_CellEndEdit);
             // 
             // Column1
@@ -258,8 +269,8 @@
             this.groupBox1.Size = new System.Drawing.Size(216, 255);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "macierz Dmatrix--  ";
-            this.toolTip1.SetToolTip(this.groupBox1, "macierz Dmatrix--\r\nssaca");
+            this.groupBox1.Text = "macierz D--  ";
+            this.toolTip1.SetToolTip(this.groupBox1, resources.GetString("groupBox1.ToolTip"));
             // 
             // dgvDout
             // 
@@ -310,8 +321,8 @@
             this.dgvDout.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvDout.Size = new System.Drawing.Size(204, 200);
             this.dgvDout.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.dgvDout, "macierz Dmatrix+    DinMatrix\r\nliczba strzalek wchodzacych do miejsca \r\nz poprzedzajacych tra" +
-        "nzycji");
+            this.toolTip1.SetToolTip(this.dgvDout, "macierz Dmatrix+    DinMatrix\r\nliczba strzalek wchodzacych do miejsca \r\nz poprzed" +
+        "zajacych tranzycji");
             this.dgvDout.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDinDout_CellEndEdit);
             // 
             // dataGridViewTextBoxColumn1
@@ -356,8 +367,8 @@
             this.groupBox2.Size = new System.Drawing.Size(216, 255);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "macierz Dmatrix+  ";
-            this.toolTip1.SetToolTip(this.groupBox2, "macierz Dmatrix+\r\nssaca");
+            this.groupBox2.Text = "macierz D+  ";
+            this.toolTip1.SetToolTip(this.groupBox2, resources.GetString("groupBox2.ToolTip"));
             // 
             // btnZoomDin
             // 
@@ -397,7 +408,7 @@
             this.groupBox3.Size = new System.Drawing.Size(216, 255);
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "transponowana macierz incydencji";
+            this.groupBox3.Text = "transponowana macierz incydencji D";
             this.toolTip1.SetToolTip(this.groupBox3, "transponowana macierz incydencji");
             // 
             // dgvIncidenceMatrix
@@ -525,8 +536,8 @@
             this.dgvMbegin.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvMbegin.Size = new System.Drawing.Size(464, 46);
             this.dgvMbegin.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.dgvMbegin, "macierz Dmatrix+    DinMatrix\r\nliczba strzalek wchodzacych do miejsca \r\nz poprzedzajacych tra" +
-        "nzycji");
+            this.toolTip1.SetToolTip(this.dgvMbegin, "macierz Dmatrix+    DinMatrix\r\nliczba strzalek wchodzacych do miejsca \r\nz poprzed" +
+        "zajacych tranzycji");
             this.dgvMbegin.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDinDout_CellEndEdit);
             // 
             // dataGridViewTextBoxColumn5
@@ -541,11 +552,11 @@
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.Width = 44;
             // 
-            // dataGridViewTcond
+            // dgvTcond
             // 
-            this.dataGridViewTcond.AllowUserToAddRows = false;
-            this.dataGridViewTcond.AllowUserToDeleteRows = false;
-            this.dataGridViewTcond.AllowUserToResizeRows = false;
+            this.dgvTcond.AllowUserToAddRows = false;
+            this.dgvTcond.AllowUserToDeleteRows = false;
+            this.dgvTcond.AllowUserToResizeRows = false;
             dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -555,9 +566,9 @@
             dataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTcond.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
-            this.dataGridViewTcond.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewTcond.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvTcond.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
+            this.dgvTcond.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTcond.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn7,
             this.dataGridViewTextBoxColumn8});
             dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -569,10 +580,10 @@
             dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewTcond.DefaultCellStyle = dataGridViewCellStyle18;
-            this.dataGridViewTcond.Location = new System.Drawing.Point(40, 19);
-            this.dataGridViewTcond.Name = "dataGridViewTcond";
-            this.dataGridViewTcond.ReadOnly = true;
+            this.dgvTcond.DefaultCellStyle = dataGridViewCellStyle18;
+            this.dgvTcond.Location = new System.Drawing.Point(46, 19);
+            this.dgvTcond.Name = "dgvTcond";
+            this.dgvTcond.ReadOnly = true;
             dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -582,19 +593,18 @@
             dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTcond.RowHeadersDefaultCellStyle = dataGridViewCellStyle19;
-            this.dataGridViewTcond.RowHeadersWidth = 25;
+            this.dgvTcond.RowHeadersDefaultCellStyle = dataGridViewCellStyle19;
+            this.dgvTcond.RowHeadersWidth = 25;
             dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle20.Format = "N0";
             dataGridViewCellStyle20.NullValue = "0";
-            this.dataGridViewTcond.RowsDefaultCellStyle = dataGridViewCellStyle20;
-            this.dataGridViewTcond.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridViewTcond.ShowEditingIcon = false;
-            this.dataGridViewTcond.Size = new System.Drawing.Size(252, 177);
-            this.dataGridViewTcond.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.dataGridViewTcond, "macierz Dmatrix+    DinMatrix\r\nliczba strzalek wchodzacych do miejsca \r\nz poprzedzajacych tra" +
-        "nzycji");
-            this.dataGridViewTcond.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTcond_CellContentClick);
+            this.dgvTcond.RowsDefaultCellStyle = dataGridViewCellStyle20;
+            this.dgvTcond.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvTcond.ShowEditingIcon = false;
+            this.dgvTcond.Size = new System.Drawing.Size(343, 237);
+            this.dgvTcond.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.dgvTcond, "warunki minimalne przy ktorych \r\ntranzycja jest gotowa do odpalenia");
+            this.dgvTcond.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTcond_CellContentClick);
             // 
             // dataGridViewTextBoxColumn7
             // 
@@ -612,23 +622,91 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.dgvMcurrent);
+            this.groupBox6.Controls.Add(this.label14);
+            this.groupBox6.Controls.Add(this.label13);
+            this.groupBox6.Controls.Add(this.label12);
+            this.groupBox6.Controls.Add(this.label11);
+            this.groupBox6.Controls.Add(this.label8);
+            this.groupBox6.Controls.Add(this.label6);
+            this.groupBox6.Controls.Add(this.dgvMhistory);
+            this.groupBox6.Controls.Add(this.btnReset);
+            this.groupBox6.Controls.Add(this.label5);
             this.groupBox6.Controls.Add(this.label10);
             this.groupBox6.Controls.Add(this.tbCurrentStep);
             this.groupBox6.Controls.Add(this.label4);
             this.groupBox6.Location = new System.Drawing.Point(8, 6);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(659, 202);
+            this.groupBox6.Size = new System.Drawing.Size(258, 266);
             this.groupBox6.TabIndex = 11;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Symulacja";
             this.toolTip1.SetToolTip(this.groupBox6, "transponowana macierz incydencji");
             // 
-            // dgvMcurrent
+            // label14
             // 
-            this.dgvMcurrent.AllowUserToAddRows = false;
-            this.dgvMcurrent.AllowUserToDeleteRows = false;
-            this.dgvMcurrent.AllowUserToResizeRows = false;
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(8, 186);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(22, 13);
+            this.label14.TabIndex = 26;
+            this.label14.Text = "n-4";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(8, 208);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(22, 13);
+            this.label13.TabIndex = 25;
+            this.label13.Text = "n-5";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(8, 230);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(22, 13);
+            this.label12.TabIndex = 24;
+            this.label12.Text = "n-6";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(8, 164);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(22, 13);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "n-3";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(8, 120);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(22, 13);
+            this.label8.TabIndex = 21;
+            this.label8.Text = "n-1";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 142);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(22, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "n-2";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // dgvMhistory
+            // 
+            this.dgvMhistory.AllowUserToAddRows = false;
+            this.dgvMhistory.AllowUserToDeleteRows = false;
+            this.dgvMhistory.AllowUserToResizeRows = false;
             dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle21.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -638,11 +716,11 @@
             dataGridViewCellStyle21.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle21.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle21.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMcurrent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle21;
-            this.dgvMcurrent.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMcurrent.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn9,
-            this.dataGridViewTextBoxColumn10});
+            this.dgvMhistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle21;
+            this.dgvMhistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMhistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn14,
+            this.dataGridViewTextBoxColumn15});
             dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -652,9 +730,10 @@
             dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMcurrent.DefaultCellStyle = dataGridViewCellStyle22;
-            this.dgvMcurrent.Location = new System.Drawing.Point(106, 85);
-            this.dgvMcurrent.Name = "dgvMcurrent";
+            this.dgvMhistory.DefaultCellStyle = dataGridViewCellStyle22;
+            this.dgvMhistory.Location = new System.Drawing.Point(36, 72);
+            this.dgvMhistory.Name = "dgvMhistory";
+            this.dgvMhistory.ReadOnly = true;
             dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -664,39 +743,60 @@
             dataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMcurrent.RowHeadersDefaultCellStyle = dataGridViewCellStyle23;
-            this.dgvMcurrent.RowHeadersVisible = false;
-            this.dgvMcurrent.RowHeadersWidth = 25;
+            this.dgvMhistory.RowHeadersDefaultCellStyle = dataGridViewCellStyle23;
+            this.dgvMhistory.RowHeadersVisible = false;
+            this.dgvMhistory.RowHeadersWidth = 25;
             dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle24.Format = "N0";
             dataGridViewCellStyle24.NullValue = "0";
-            this.dgvMcurrent.RowsDefaultCellStyle = dataGridViewCellStyle24;
-            this.dgvMcurrent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvMcurrent.Size = new System.Drawing.Size(330, 46);
-            this.dgvMcurrent.TabIndex = 14;
-            this.toolTip1.SetToolTip(this.dgvMcurrent, "macierz Dmatrix+    DinMatrix\r\nliczba strzalek wchodzacych do miejsca \r\nz poprzedzajacych tra" +
-        "nzycji");
+            this.dgvMhistory.RowsDefaultCellStyle = dataGridViewCellStyle24;
+            this.dgvMhistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvMhistory.Size = new System.Drawing.Size(212, 184);
+            this.dgvMhistory.TabIndex = 18;
+            this.toolTip1.SetToolTip(this.dgvMhistory, "historia znakowan");
             // 
-            // dataGridViewTextBoxColumn9
+            // dataGridViewTextBoxColumn14
             // 
-            this.dataGridViewTextBoxColumn9.HeaderText = "99";
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.Width = 25;
+            this.dataGridViewTextBoxColumn14.HeaderText = "99";
+            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            this.dataGridViewTextBoxColumn14.ReadOnly = true;
+            this.dataGridViewTextBoxColumn14.Width = 25;
             // 
-            // dataGridViewTextBoxColumn10
+            // dataGridViewTextBoxColumn15
             // 
-            this.dataGridViewTextBoxColumn10.HeaderText = "99";
-            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            this.dataGridViewTextBoxColumn10.Width = 44;
+            this.dataGridViewTextBoxColumn15.HeaderText = "99";
+            this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
+            this.dataGridViewTextBoxColumn15.ReadOnly = true;
+            this.dataGridViewTextBoxColumn15.Width = 44;
+            // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(173, 17);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(75, 23);
+            this.btnReset.TabIndex = 15;
+            this.btnReset.Text = "Reset sieci";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 56);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(97, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Wektor znakowań:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 95);
+            this.label10.Location = new System.Drawing.Point(8, 98);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(91, 26);
+            this.label10.Size = new System.Drawing.Size(22, 13);
             this.label10.TabIndex = 13;
-            this.label10.Text = "wektor znakowań\r\nbieżacych:";
+            this.label10.Text = "n-0";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tbCurrentStep
@@ -744,7 +844,7 @@
             dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvTready.DefaultCellStyle = dataGridViewCellStyle26;
-            this.dgvTready.Location = new System.Drawing.Point(0, 19);
+            this.dgvTready.Location = new System.Drawing.Point(6, 19);
             this.dgvTready.Name = "dgvTready";
             this.dgvTready.ReadOnly = true;
             dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -765,7 +865,7 @@
             this.dgvTready.RowsDefaultCellStyle = dataGridViewCellStyle28;
             this.dgvTready.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvTready.ShowEditingIcon = false;
-            this.dgvTready.Size = new System.Drawing.Size(39, 177);
+            this.dgvTready.Size = new System.Drawing.Size(39, 237);
             this.dgvTready.TabIndex = 14;
             this.toolTip1.SetToolTip(this.dgvTready, "tranzycje gotowe do odpalenia");
             this.dgvTready.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView3_CellContentClick);
@@ -779,50 +879,6 @@
             this.dataGridViewTextBoxColumn13.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewTextBoxColumn13.TrueValue = "OK";
             this.dataGridViewTextBoxColumn13.Width = 35;
-            // 
-            // btnNumPlacesDown
-            // 
-            this.btnNumPlacesDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnNumPlacesDown.Location = new System.Drawing.Point(91, 13);
-            this.btnNumPlacesDown.Name = "btnNumPlacesDown";
-            this.btnNumPlacesDown.Size = new System.Drawing.Size(20, 20);
-            this.btnNumPlacesDown.TabIndex = 12;
-            this.btnNumPlacesDown.Text = "-";
-            this.btnNumPlacesDown.UseVisualStyleBackColor = true;
-            this.btnNumPlacesDown.Click += new System.EventHandler(this.btnNumPlacesDown_Click);
-            // 
-            // btnNumPlacesUp
-            // 
-            this.btnNumPlacesUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnNumPlacesUp.Location = new System.Drawing.Point(164, 13);
-            this.btnNumPlacesUp.Name = "btnNumPlacesUp";
-            this.btnNumPlacesUp.Size = new System.Drawing.Size(20, 20);
-            this.btnNumPlacesUp.TabIndex = 13;
-            this.btnNumPlacesUp.Text = "+";
-            this.btnNumPlacesUp.UseVisualStyleBackColor = true;
-            this.btnNumPlacesUp.Click += new System.EventHandler(this.btnNumPlacesUp_Click);
-            // 
-            // btnNumTransitionsUp
-            // 
-            this.btnNumTransitionsUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnNumTransitionsUp.Location = new System.Drawing.Point(164, 40);
-            this.btnNumTransitionsUp.Name = "btnNumTransitionsUp";
-            this.btnNumTransitionsUp.Size = new System.Drawing.Size(20, 20);
-            this.btnNumTransitionsUp.TabIndex = 15;
-            this.btnNumTransitionsUp.Text = "+";
-            this.btnNumTransitionsUp.UseVisualStyleBackColor = true;
-            this.btnNumTransitionsUp.Click += new System.EventHandler(this.btnNumTransitionsUp_Click);
-            // 
-            // btnNumTransitionsDown
-            // 
-            this.btnNumTransitionsDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.btnNumTransitionsDown.Location = new System.Drawing.Point(91, 40);
-            this.btnNumTransitionsDown.Name = "btnNumTransitionsDown";
-            this.btnNumTransitionsDown.Size = new System.Drawing.Size(20, 20);
-            this.btnNumTransitionsDown.TabIndex = 14;
-            this.btnNumTransitionsDown.Text = "-";
-            this.btnNumTransitionsDown.UseVisualStyleBackColor = true;
-            this.btnNumTransitionsDown.Click += new System.EventHandler(this.btnNumTransitionsDown_Click);
             // 
             // menuStrip1
             // 
@@ -858,51 +914,57 @@
             this.nowyToolStripMenuItem.Name = "nowyToolStripMenuItem";
             this.nowyToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.nowyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.N)));
-            this.nowyToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.nowyToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.nowyToolStripMenuItem.Text = "&Nowy";
             // 
             // otworzToolStripMenuItem
             // 
             this.otworzToolStripMenuItem.Name = "otworzToolStripMenuItem";
-            this.otworzToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.otworzToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.otworzToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.otworzToolStripMenuItem.Text = "&Otworz";
             this.otworzToolStripMenuItem.Click += new System.EventHandler(this.otworzToolStripMenuItem_Click);
             // 
             // zapiszToolStripMenuItem
             // 
             this.zapiszToolStripMenuItem.Name = "zapiszToolStripMenuItem";
-            this.zapiszToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.zapiszToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.zapiszToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.zapiszToolStripMenuItem.Text = "&Zapisz";
             this.zapiszToolStripMenuItem.Click += new System.EventHandler(this.zapiszToolStripMenuItem_Click);
             // 
             // zapiszJakoToolStripMenuItem
             // 
             this.zapiszJakoToolStripMenuItem.Name = "zapiszJakoToolStripMenuItem";
-            this.zapiszJakoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.zapiszJakoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.zapiszJakoToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.zapiszJakoToolStripMenuItem.Text = "Z&apisz jako...";
             this.zapiszJakoToolStripMenuItem.Click += new System.EventHandler(this.zapiszJakoToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(141, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(210, 6);
             // 
             // drukujToolStripMenuItem
             // 
             this.drukujToolStripMenuItem.Name = "drukujToolStripMenuItem";
-            this.drukujToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.drukujToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.drukujToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.drukujToolStripMenuItem.Text = "&Drukuj";
             this.drukujToolStripMenuItem.Click += new System.EventHandler(this.drukujToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(141, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(210, 6);
             // 
             // wyjscieToolStripMenuItem
             // 
             this.wyjscieToolStripMenuItem.Name = "wyjscieToolStripMenuItem";
-            this.wyjscieToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.wyjscieToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.X)));
+            this.wyjscieToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.wyjscieToolStripMenuItem.Text = "&Wyjscie";
             this.wyjscieToolStripMenuItem.Click += new System.EventHandler(this.wyjscieToolStripMenuItem_Click);
             // 
@@ -974,7 +1036,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(683, 444);
+            this.tabControl1.Size = new System.Drawing.Size(683, 395);
             this.tabControl1.TabIndex = 17;
             // 
             // tabPage1
@@ -986,7 +1048,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(675, 418);
+            this.tabPage1.Size = new System.Drawing.Size(675, 369);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Parametry Sieci";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1009,6 +1071,55 @@
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             // 
+            // btnNumPlacesDown
+            // 
+            this.btnNumPlacesDown.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNumPlacesDown.BackgroundImage")));
+            this.btnNumPlacesDown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnNumPlacesDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnNumPlacesDown.Location = new System.Drawing.Point(91, 13);
+            this.btnNumPlacesDown.Name = "btnNumPlacesDown";
+            this.btnNumPlacesDown.Size = new System.Drawing.Size(20, 20);
+            this.btnNumPlacesDown.TabIndex = 12;
+            this.btnNumPlacesDown.UseVisualStyleBackColor = true;
+            this.btnNumPlacesDown.Click += new System.EventHandler(this.btnNumPlacesDown_Click);
+            // 
+            // btnNumTransitionsUp
+            // 
+            this.btnNumTransitionsUp.BackgroundImage = global::PetriNetCsharp.Properties.Resources.plus1;
+            this.btnNumTransitionsUp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnNumTransitionsUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnNumTransitionsUp.Location = new System.Drawing.Point(164, 40);
+            this.btnNumTransitionsUp.Name = "btnNumTransitionsUp";
+            this.btnNumTransitionsUp.Size = new System.Drawing.Size(20, 20);
+            this.btnNumTransitionsUp.TabIndex = 15;
+            this.btnNumTransitionsUp.UseVisualStyleBackColor = true;
+            this.btnNumTransitionsUp.Click += new System.EventHandler(this.btnNumTransitionsUp_Click);
+            // 
+            // btnNumPlacesUp
+            // 
+            this.btnNumPlacesUp.BackColor = System.Drawing.Color.Transparent;
+            this.btnNumPlacesUp.BackgroundImage = global::PetriNetCsharp.Properties.Resources.plus1;
+            this.btnNumPlacesUp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnNumPlacesUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnNumPlacesUp.Location = new System.Drawing.Point(164, 13);
+            this.btnNumPlacesUp.Name = "btnNumPlacesUp";
+            this.btnNumPlacesUp.Size = new System.Drawing.Size(20, 20);
+            this.btnNumPlacesUp.TabIndex = 13;
+            this.btnNumPlacesUp.UseVisualStyleBackColor = false;
+            this.btnNumPlacesUp.Click += new System.EventHandler(this.btnNumPlacesUp_Click);
+            // 
+            // btnNumTransitionsDown
+            // 
+            this.btnNumTransitionsDown.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNumTransitionsDown.BackgroundImage")));
+            this.btnNumTransitionsDown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnNumTransitionsDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnNumTransitionsDown.Location = new System.Drawing.Point(91, 40);
+            this.btnNumTransitionsDown.Name = "btnNumTransitionsDown";
+            this.btnNumTransitionsDown.Size = new System.Drawing.Size(20, 20);
+            this.btnNumTransitionsDown.TabIndex = 14;
+            this.btnNumTransitionsDown.UseVisualStyleBackColor = true;
+            this.btnNumTransitionsDown.Click += new System.EventHandler(this.btnNumTransitionsDown_Click);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.btnNextStep);
@@ -1017,16 +1128,17 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(675, 418);
+            this.tabPage2.Size = new System.Drawing.Size(675, 369);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Właściwości Sieci";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // btnNextStep
             // 
-            this.btnNextStep.Location = new System.Drawing.Point(522, 214);
+            this.btnNextStep.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNextStep.Location = new System.Drawing.Point(8, 278);
             this.btnNextStep.Name = "btnNextStep";
-            this.btnNextStep.Size = new System.Drawing.Size(147, 84);
+            this.btnNextStep.Size = new System.Drawing.Size(659, 83);
             this.btnNextStep.TabIndex = 12;
             this.btnNextStep.Text = "Następny Krok>>";
             this.btnNextStep.UseVisualStyleBackColor = true;
@@ -1035,10 +1147,10 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.dgvTready);
-            this.groupBox5.Controls.Add(this.dataGridViewTcond);
-            this.groupBox5.Location = new System.Drawing.Point(8, 210);
+            this.groupBox5.Controls.Add(this.dgvTcond);
+            this.groupBox5.Location = new System.Drawing.Point(272, 6);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(298, 202);
+            this.groupBox5.Size = new System.Drawing.Size(395, 266);
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Minimalne warunki odpalania tranzycji";
@@ -1055,9 +1167,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(683, 468);
+            this.ClientSize = new System.Drawing.Size(683, 419);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Symulator Sieci Petriego";
@@ -1069,10 +1182,10 @@
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvIncidenceMatrix)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMbegin)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTcond)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTcond)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvMcurrent)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMhistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTready)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -1145,7 +1258,7 @@
         private System.Windows.Forms.DataGridView dgvMbegin;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
-        private System.Windows.Forms.DataGridView dataGridViewTcond;
+        private System.Windows.Forms.DataGridView dgvTcond;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
         private System.Windows.Forms.GroupBox groupBox6;
@@ -1154,10 +1267,18 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewTextBoxColumn13;
         private System.Windows.Forms.TextBox tbCurrentStep;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.DataGridView dgvMcurrent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DataGridView dgvMhistory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn15;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label6;
     }
 }
 

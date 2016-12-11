@@ -288,10 +288,35 @@ namespace PetriNetCsharp
 
         }
 
+       public static List<List<int>> ImportDataGridToMatrix2D(DataGridView source)
+        {
+            try
+            {
+                List<List<int>> result = new List<List<int>>(source.RowCount);
+                List<int> resultRow = new List<int>(source.ColumnCount);
+                for (int i = 0; i < source.RowCount; i++)
+                {
+                    for (int j = 0; j < source.ColumnCount; j++)
+                    {
+                        resultRow.Add(int.Parse(source.Rows[i].Cells[j].Value.ToString()));
+                    }
+                    result.Add(resultRow);
+                    resultRow = new List<int>(source.ColumnCount);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                Report(ex);
+            }
+            return null;
+        }
+
 
         public static void Report(Exception ex)
         {
-            MessageBox.Show(ex.Message + "\n\n" + ex.StackTrace);
+            MessageBox.Show(ex.Message + "\n\n" + ex.GetType()+"\n\n"+ ex.StackTrace);
         }
 
 
