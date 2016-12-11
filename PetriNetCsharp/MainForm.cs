@@ -16,16 +16,23 @@ using static PetriNetCsharp.Helpers;
 
 namespace PetriNetCsharp
 {
+   
     public partial class MainForm : Form
     {
+        private delegate void UpdateDataGridAsVector(List<int> vector);
         private int _numberOfPlacesDgvCols;
         private int _numberOfTransitionsDgvRows;
+        private List<List<int>> ListDin;
+        private List<List<int>> ListDout;
+        private List<List<int>> ListMo;
         private PetriNet _petriNet;
         private string _currentSavedFileName;
         private string _titleBar;
+        private int MhistoryEntries = 7;
         public MainForm()
         {
             InitializeComponent();
+            
             //List<int> Mcurrent = new List<int>(new int[] { 1, 0, 0, 0 });
             _numberOfPlacesDgvCols = int.Parse(textBoxNumPlaces.Text);
             _numberOfTransitionsDgvRows = int.Parse(textBoxNumTransitions.Text);
@@ -33,14 +40,12 @@ namespace PetriNetCsharp
             UpdateDataGrid(dgvDout);
             UpdateDataGrid(dgvMbegin, 1);
             UpdateDataGrid(dgvIncidenceMatrix);
-            UpdateDataGrid(dgvMcurrent, 1);
+            UpdateDataGrid(dgvMhistory);
+            dgvMhistory.RowCount = MhistoryEntries;
 
-
-            //UpdateDataGrid(dgvIncidenceMatrix);
-            //ImportMatrix2DToDataGridView(_petriNet.Dmatrix,dgvIncidenceMatrix);
 
             //DRUGI TAB
-            UpdateDataGrid(dataGridViewTcond);
+            UpdateDataGrid(dgvTcond);
             UpdateDataGrid(dgvTready, 2);
 
             //#################################################testowa siec
@@ -118,9 +123,9 @@ namespace PetriNetCsharp
             UpdateDataGrid(dgvDout);
             UpdateDataGrid(dgvMbegin, 1);
             UpdateDataGrid(dgvIncidenceMatrix);
-            UpdateDataGrid(dgvMcurrent, 1);
-            UpdateDataGrid(dataGridViewTcond);
+            UpdateDataGrid(dgvTcond);
             UpdateDataGrid(dgvTready, 2);
+            UpdateDataGrid(dgvMhistory);
 
         }
 
@@ -135,6 +140,7 @@ namespace PetriNetCsharp
             {
                 _numberOfPlacesDgvCols = int.Parse(textBoxNumPlaces.Text);
                 UpdateAllDataGridViews();
+                UpdatePetriNet();
             }
             catch (FormatException ex)
             {
@@ -153,6 +159,7 @@ namespace PetriNetCsharp
             {
                 _numberOfTransitionsDgvRows = int.Parse(textBoxNumTransitions.Text);
                 UpdateAllDataGridViews();
+                UpdatePetriNet();
             }
             catch (FormatException ex)
             {
@@ -174,10 +181,18 @@ namespace PetriNetCsharp
 
             try
             {
-                _petriNet = new PetriNet(dgvDin, dgvDout, dgvMbegin);
+                UpdateAllDataGridViews();
+                dgvMhistory.RowCount = MhistoryEntries;
+                ListDin = ImportDataGridToMatrix2D(dgvDin);
+                ListDout = ImportDataGridToMatrix2D(dgvDout);
+                ListMo = ImportDataGridToMatrix2D(dgvMbegin);
+
+                _petriNet = new PetriNet(ListDin, ListDout, ListMo[0]);
+
                 ImportMatrix2DToDataGridView(_petriNet.Dmatrix, dgvIncidenceMatrix);
-                ImportMatrix2DToDataGridView(_petriNet.Tcond, dataGridViewTcond);
+                ImportMatrix2DToDataGridView(_petriNet.Tcond, dgvTcond);
                 ImportVectorToDataGridView(_petriNet.TReady, dgvTready);
+                tbCurrentStep.Text = _petriNet.CurrentStep.ToString();
             }
             catch (Exception ex)
             {
@@ -225,8 +240,8 @@ namespace PetriNetCsharp
 
         private void oProgramieToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //AboutBox1 about = new AboutBox1();
-            //about.Show();
+            AboutBox1 about = new AboutBox1();
+            about.Show();
         }
 
         private void wyjscieToolStripMenuItem_Click(object sender, EventArgs e)
@@ -276,14 +291,6 @@ namespace PetriNetCsharp
                 if (_currentSavedFileName == null)
                 {
                     zapiszJakoToolStripMenuItem_Click(sender, e);
-
-                    //MessageBox.Show("Nic jeszcze nie zapisywałeś!",
-                    //    "Błąd!!!",
-                    //    MessageBoxButtons.OK,
-                    //    MessageBoxIcon.Warning,
-                    //    MessageBoxDefaultButton.Button1
-                    //    //MessageBoxOptions.,
-                    //    );
                 }
                 ;
                 FileStream file = new FileStream(_currentSavedFileName, FileMode.Create);
@@ -294,8 +301,7 @@ namespace PetriNetCsharp
                     //writer.WriteLine("header for the file.");
                     //writer.WriteLine("-------------------");
                     // Arbitrary objects can also be written to the file.
-
-                    //                    var json = new JavaScriptSerializer().Serialize(_petriNet);
+                    // var json = new JavaScriptSerializer().Serialize(_petriNet);
                     string json = JsonConvert.SerializeObject(_petriNet, Formatting.Indented);
                     writer.Write(json);
                 }
@@ -400,10 +406,23 @@ namespace PetriNetCsharp
 
         private void btnNextStep_Click(object sender, EventArgs e)
         {
+            
+            for (int i = dgvMhistory.RowCount - 1; i > 0; i--)
+            {
+                for (int j = 0; j < dgvMhistory.ColumnCount; j++)
+                {
+                    dgvMhistory.Rows[i].Cells[j].Value = dgvMhistory.Rows[i - 1].Cells[j].Value;
+                }
+
+            }
+            for (int i = 0; i < dgvMhistory.ColumnCount; i++)
+            {
+                dgvMhistory.Rows[0].Cells[i].Value = _petriNet.Mcurrent[i];
+            }
             _petriNet.NextStep();
-            ImportVectorToDataGridView(_petriNet.Mcurrent, dgvMcurrent);
             tbCurrentStep.Text = _petriNet.CurrentStep.ToString();
-            //dorob update treadt dgv
+            //ImportMatrix2DToDataGridView(_petriNet.Tcond,dgvTcond); //to sie nei zmienia
+            ImportVectorToDataGridView(_petriNet.TReady, dgvTready);
         }
 
         private void atest(object sender, EventArgs e)
@@ -411,5 +430,9 @@ namespace PetriNetCsharp
             MessageBox.Show("atest");
         }
 
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            UpdatePetriNet();
+        }
     }
 }

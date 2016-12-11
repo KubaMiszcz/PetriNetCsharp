@@ -73,6 +73,30 @@ namespace PetriNetCsharp
 
         }
 
+        public PetriNet(List<List<int>> ListDin, List<List<int>> ListDout, List<int> ListMo)   //konstruktor
+        {
+            CurrentStep = 1;
+            _currentlyCheckedTransition = 0;
+            DinMatrix = ListDin;
+            DoutMatrix = ListDout;
+            Mbegin = ListMo;
+            Mcurrent = Mbegin;
+
+            NumberOfTransitions = DinMatrix.Count;
+            NumberOfPlaces = DinMatrix[0].Count;
+
+            //generowanie macierzy incydencji ==> Dmatrix = DinMatrix - DoutMatrix
+            Dmatrix = MakeIncidenceMatrix();
+
+            //generowanie macierzy Tcond - warunkow odpalenia tranzycji
+            //warunki odpalenia dla kazdej trnazycji
+            //		Tcond = Teye * DoutMatrix;
+            Tcond = MakeTransitionConditions();
+
+            TReady = MakeTreadyVector();//to jest tylko do pokazania w dgv bo i tak trza to sprawdzac po kolei pojedynczo
+
+        }
+
 
         //private //methods
         private List<bool> MakeTreadyVector()
@@ -148,36 +172,13 @@ namespace PetriNetCsharp
             _currentlyCheckedTransition++;
             if (_currentlyCheckedTransition >= NumberOfTransitions)
                 _currentlyCheckedTransition = 0;
-
+            TReady = MakeTreadyVector();
             CurrentStep++;
         }
         
 
         //######HELPERS####
-        List<List<int>> ImportDataGridToMatrix2D(DataGridView source)
-        {
-            try
-            {
-                List<List<int>> result = new List<List<int>>(source.RowCount);
-                List<int> resultRow = new List<int>(source.ColumnCount);
-                for (int i = 0; i < source.RowCount; i++)
-                {
-                    for (int j = 0; j < source.ColumnCount; j++)
-                    {
-                        resultRow.Add(int.Parse(source.Rows[i].Cells[j].Value.ToString()));
-                    }
-                    result.Add(resultRow);
-                    resultRow = new List<int>(source.ColumnCount);
-                }
-                return result;
-            }
-            catch (Exception ex)
-            {
 
-                Report(ex);
-            }
-            return null;
-        }
     }
 }
 
