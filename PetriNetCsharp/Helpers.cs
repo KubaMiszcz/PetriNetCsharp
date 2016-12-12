@@ -316,7 +316,32 @@ namespace PetriNetCsharp
 
         public static void Report(Exception ex)
         {
-            MessageBox.Show(ex.Message + "\n\n" + ex.GetType()+"\n\n"+ ex.StackTrace);
+            MessageBox.Show(
+                "\r\n\r\nMessage: " + ex.Message +
+                "\r\n\r\nType: " + ex.GetType() +
+                 "\r\n\r\nMethod: " + ex.TargetSite+
+                 "\r\n\r\nStackTrace:\r\n" + ex.StackTrace,
+                ex.Source,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
+                );
+            //MessageBox.Show(ex.Message + "\n\n" + ex.GetType()+"\n\n"+ ex.StackTrace);
+        }
+
+        public static void Report(Exception ex,Form sender)
+        {
+            MessageBox.Show(
+                "Message: " + ex.Message +
+                "\r\n\r\nType: " + ex.GetType() +
+                "\r\n\r\nSource: " + ex.Source+
+                 "\r\n\r\nMethod: " + ex.TargetSite +
+                 "\r\n\r\nStackTrace:\r\n" + ex.StackTrace,
+                sender.Text,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error
+                );
+               
+            //MessageBox.Show(ex.Message + "\n\n" + ex.GetType() + "\n\n" + ex.StackTrace);
         }
 
 

@@ -32,7 +32,12 @@ namespace PetriNetCsharp
         public MainForm()
         {
             InitializeComponent();
-            
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            _titleBar = this.Text;
+
             //List<int> Mcurrent = new List<int>(new int[] { 1, 0, 0, 0 });
             _numberOfPlacesDgvCols = int.Parse(textBoxNumPlaces.Text);
             _numberOfTransitionsDgvRows = int.Parse(textBoxNumTransitions.Text);
@@ -66,8 +71,8 @@ namespace PetriNetCsharp
             //#################################################koneic testowej sieci
 
             UpdatePetriNet();
-
         }
+
 
         public void UpdateDataGrid(DataGridView target, int param = 0)
         {
@@ -129,26 +134,24 @@ namespace PetriNetCsharp
 
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            _titleBar = this.Text;
-        }
-
+     
         private void textBoxNumPlaces_TextChanged(object sender, EventArgs e)
         {
             try
             {
+                errorProvider1.Clear();
                 _numberOfPlacesDgvCols = int.Parse(textBoxNumPlaces.Text);
                 UpdateAllDataGridViews();
                 UpdatePetriNet();
             }
             catch (FormatException ex)
             {
-                MessageBox.Show("podaj prawidlowo liczbe miejsc!\n\n" + ex.StackTrace);
+                errorProvider1.SetError(textBoxNumPlaces,"Podaj prawidlowo liczbe miejsc!");
+                //MessageBox.Show("podaj prawidlowo liczbe miejsc!\n\n" + ex.StackTrace);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Report(ex,this);
             }
 
         }
@@ -163,11 +166,12 @@ namespace PetriNetCsharp
             }
             catch (FormatException ex)
             {
-                MessageBox.Show("podaj prawidlowo liczbe tranzycji!\n\n" + ex.StackTrace);
+                Report(ex,this);
+                //MessageBox.Show("podaj prawidlowo liczbe tranzycji!\n\n" + ex.StackTrace);
             }
-            catch (Exception)
+            catch (Exception ex )
             {
-                throw;
+                Report(ex,this);
             }
         }
 
@@ -196,7 +200,7 @@ namespace PetriNetCsharp
             }
             catch (Exception ex)
             {
-                Report(ex);
+                Report(ex, this);
             }
         }
 
@@ -238,139 +242,142 @@ namespace PetriNetCsharp
             UpdatePetriNet();
         }
 
-        private void oProgramieToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AboutBox1 about = new AboutBox1();
-            about.Show();
-        }
+        //operacje w menu zapis odczyt itp
+        //#region
+        //private void oProgramieToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    AboutBox1 about = new AboutBox1();
+        //    about.Show();
+        //}
 
-        private void wyjscieToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+        //private void wyjscieToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    Application.Exit();
+        //}
 
-        private void zapiszJakoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            {
-                saveFileDialog1.Filter = "PetriNet files (*.pn)|*.pn|txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                saveFileDialog1.FilterIndex = 1;
-                saveFileDialog1.RestoreDirectory = true;
-                saveFileDialog1.DefaultExt = ".pn";
-                saveFileDialog1.FileName = "Projekt1";
-                Stream myStream;
+        //private void zapiszJakoToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    {
+        //        saveFileDialog1.Filter = "PetriNet files (*.pn)|*.pn|txt files (*.txt)|*.txt|All files (*.*)|*.*";
+        //        saveFileDialog1.FilterIndex = 1;
+        //        saveFileDialog1.RestoreDirectory = true;
+        //        saveFileDialog1.DefaultExt = ".pn";
+        //        saveFileDialog1.FileName = "Projekt1";
+        //        Stream myStream;
 
-                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    if ((myStream = saveFileDialog1.OpenFile()) != null)
-                    {
-                        using (StreamWriter writer = new StreamWriter(myStream, System.Text.Encoding.UTF8))
-                        {
-                            // Add some text to the file.
-                            //writer.Write("This is the ");
-                            //writer.WriteLine("header for the file.");
-                            //writer.WriteLine("-------------------");
-                            // Arbitrary objects can also be written to the file.
-                            //var json = new JavaScriptSerializer().Serialize(_petriNet);
-                            string json = JsonConvert.SerializeObject(_petriNet, Formatting.Indented);
-                            writer.WriteLine(json);
-                        }
-                        myStream.Close();
+        //        if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+        //        {
+        //            if ((myStream = saveFileDialog1.OpenFile()) != null)
+        //            {
+        //                using (StreamWriter writer = new StreamWriter(myStream, System.Text.Encoding.UTF8))
+        //                {
+        //                    // Add some text to the file.
+        //                    //writer.Write("This is the ");
+        //                    //writer.WriteLine("header for the file.");
+        //                    //writer.WriteLine("-------------------");
+        //                    // Arbitrary objects can also be written to the file.
+        //                    //var json = new JavaScriptSerializer().Serialize(_petriNet);
+        //                    string json = JsonConvert.SerializeObject(_petriNet, Formatting.Indented);
+        //                    writer.WriteLine(json);
+        //                }
+        //                myStream.Close();
 
-                    }
-                }
-                //String AktualnyPlikDoZapisu_nazwa = System.IO.Path.GetFileNameWithoutExtension(AktualnyPlikDoZapisu);
-                _currentSavedFileName = saveFileDialog1.FileName;
-                this.Text = _currentSavedFileName + " - " + _titleBar;
-            }
+        //            }
+        //        }
+        //        //String AktualnyPlikDoZapisu_nazwa = System.IO.Path.GetFileNameWithoutExtension(AktualnyPlikDoZapisu);
+        //        _currentSavedFileName = saveFileDialog1.FileName;
+        //        this.Text = _currentSavedFileName + " - " + _titleBar;
+        //    }
 
-        }
+        //}
 
-        private void zapiszToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            {
-                if (_currentSavedFileName == null)
-                {
-                    zapiszJakoToolStripMenuItem_Click(sender, e);
-                }
-                ;
-                FileStream file = new FileStream(_currentSavedFileName, FileMode.Create);
-                using (StreamWriter writer = new StreamWriter(file, System.Text.Encoding.UTF8))
-                {
-                    // Add some text to the file.
-                    //writer.Write("This is the ");
-                    //writer.WriteLine("header for the file.");
-                    //writer.WriteLine("-------------------");
-                    // Arbitrary objects can also be written to the file.
-                    // var json = new JavaScriptSerializer().Serialize(_petriNet);
-                    string json = JsonConvert.SerializeObject(_petriNet, Formatting.Indented);
-                    writer.Write(json);
-                }
-                file.Close();
-            }
-        }
+        //private void zapiszToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    {
+        //        if (_currentSavedFileName == null)
+        //        {
+        //            zapiszJakoToolStripMenuItem_Click(sender, e);
+        //        }
+        //        ;
+        //        FileStream file = new FileStream(_currentSavedFileName, FileMode.Create);
+        //        using (StreamWriter writer = new StreamWriter(file, System.Text.Encoding.UTF8))
+        //        {
+        //            // Add some text to the file.
+        //            //writer.Write("This is the ");
+        //            //writer.WriteLine("header for the file.");
+        //            //writer.WriteLine("-------------------");
+        //            // Arbitrary objects can also be written to the file.
+        //            // var json = new JavaScriptSerializer().Serialize(_petriNet);
+        //            string json = JsonConvert.SerializeObject(_petriNet, Formatting.Indented);
+        //            writer.Write(json);
+        //        }
+        //        file.Close();
+        //    }
+        //}
 
-        private void otworzToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            {
-                Stream myStream = null;
-                OpenFileDialog openFileDialog1 = new OpenFileDialog();
+        //private void otworzToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    {
+        //        Stream myStream = null;
+        //        OpenFileDialog openFileDialog1 = new OpenFileDialog();
 
-                //openFileDialog1.InitialDirectory = "c:\\";
-                openFileDialog1.Filter = "PetriNet files (*.pn)|*.pn|txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                openFileDialog1.FilterIndex = 1;
-                openFileDialog1.RestoreDirectory = true;
+        //        //openFileDialog1.InitialDirectory = "c:\\";
+        //        openFileDialog1.Filter = "PetriNet files (*.pn)|*.pn|txt files (*.txt)|*.txt|All files (*.*)|*.*";
+        //        openFileDialog1.FilterIndex = 1;
+        //        openFileDialog1.RestoreDirectory = true;
 
-                if (openFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        if ((myStream = openFileDialog1.OpenFile()) != null)
-                        {
-                            using (StreamReader reader = new StreamReader(myStream, System.Text.Encoding.UTF8))
-                            {
-                                // Insert code to read the stream here.
-                                while (!reader.EndOfStream)
-                                {
-                                    string json = reader.ReadToEnd();
-                                    _petriNet = JsonConvert.DeserializeObject<PetriNet>(json);
-                                    ImportMatrix2DToDataGridView(_petriNet.DinMatrix, dgvDin);
-                                    ImportMatrix2DToDataGridView(_petriNet.DoutMatrix, dgvDout);
-                                    ImportVectorToDataGridView(_petriNet.Mbegin, dgvMbegin);
-                                    UpdatePetriNet();
+        //        if (openFileDialog1.ShowDialog() == DialogResult.OK)
+        //        {
+        //            try
+        //            {
+        //                if ((myStream = openFileDialog1.OpenFile()) != null)
+        //                {
+        //                    using (StreamReader reader = new StreamReader(myStream, System.Text.Encoding.UTF8))
+        //                    {
+        //                        // Insert code to read the stream here.
+        //                        while (!reader.EndOfStream)
+        //                        {
+        //                            string json = reader.ReadToEnd();
+        //                            _petriNet = JsonConvert.DeserializeObject<PetriNet>(json);
+        //                            ImportMatrix2DToDataGridView(_petriNet.DinMatrix, dgvDin);
+        //                            ImportMatrix2DToDataGridView(_petriNet.DoutMatrix, dgvDout);
+        //                            ImportVectorToDataGridView(_petriNet.Mbegin, dgvMbegin);
+        //                            UpdatePetriNet();
 
-                                    // _petriNet = new JavaScriptSerializer().Deserialize<PetriNet>(json);
-                                }
+        //                            // _petriNet = new JavaScriptSerializer().Deserialize<PetriNet>(json);
+        //                        }
 
-                                myStream.Close();
-                                //_petriNet.Matrix2DToDataGridView(_petriNet.DinMatrix,dgvDin);
-                                //_petriNet.Matrix2DToDataGridView(_petriNet.DoutMatrix, dgvDout);
-                                //List<List<int>> tmpList =new List<List<int>>();
-                                //tmpList.Add(_petriNet.Mcurrent);
-                                //_petriNet.Matrix2DToDataGridView(tmpList, dataGridViewMcurrent);
-                            }
+        //                        myStream.Close();
+        //                        //_petriNet.Matrix2DToDataGridView(_petriNet.DinMatrix,dgvDin);
+        //                        //_petriNet.Matrix2DToDataGridView(_petriNet.DoutMatrix, dgvDout);
+        //                        //List<List<int>> tmpList =new List<List<int>>();
+        //                        //tmpList.Add(_petriNet.Mcurrent);
+        //                        //_petriNet.Matrix2DToDataGridView(tmpList, dataGridViewMcurrent);
+        //                    }
 
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message + ex.StackTrace);
-                    }
-                }
-                //String AktualnyPlikDoZapisu_nazwa = System.IO.Path.GetFileNameWithoutExtension(AktualnyPlikDoZapisu);
-                _currentSavedFileName = openFileDialog1.FileName;
-                if (_currentSavedFileName != "")
-                {
-                    this.Text = _currentSavedFileName + " - " + _titleBar;
-                }
-            }
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                MessageBox.Show(ex.Message + ex.StackTrace);
+        //            }
+        //        }
+        //        //String AktualnyPlikDoZapisu_nazwa = System.IO.Path.GetFileNameWithoutExtension(AktualnyPlikDoZapisu);
+        //        _currentSavedFileName = openFileDialog1.FileName;
+        //        if (_currentSavedFileName != "")
+        //        {
+        //            this.Text = _currentSavedFileName + " - " + _titleBar;
+        //        }
+        //    }
 
-        }
+        //}
 
-        private void drukujToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            printDialog1.ShowDialog();
+        //private void drukujToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
+        //    printDialog1.ShowDialog();
 
-        }
+        //}
+        //#endregion  
 
         private void btnZerujDin_Click(object sender, EventArgs e)
         {
