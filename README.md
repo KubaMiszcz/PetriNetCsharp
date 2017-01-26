@@ -15,21 +15,6 @@ co nei dziala
 
 
 
-podcasty russia today
-multimedia zaplac
-homework ang
-kabel napraw ten do lapka zepsuty co jest
-policz deski: szafka lazienka, szafka kolo lustra, polka smiszna, polka kolo wanny, barek drugi
-	polka nad oknem moj pokojm, polka nad oknem kuchia
-przykrec karnisz kuchnia
-kalibruj serwo
-dodaj zrodla do pracy inzunerskiek lokalne
-selfiesticka
-
-
-
-
-
 
 
 
